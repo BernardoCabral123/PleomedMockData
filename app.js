@@ -18,9 +18,14 @@ app.get('/doctors', (req, res) => {
   res.json(doctors);
 });
 
-// Get availability for a specific doctor
-app.get('/availability/:doctorId', (req, res) => {
-  const doctorId = req.params.doctorId;
+// Get availability for a specific doctor (POST method, doctorId in body)
+app.post('/availability', (req, res) => {
+  const { doctorId } = req.body;
+
+  if (!doctorId) {
+    return res.status(400).json({ error: 'Missing required field: doctorId' });
+  }
+
   const doctor = doctors[doctorId];
 
   if (!doctor) {
